@@ -75,5 +75,6 @@ fn main() {
     // testPrimeSpeed();
     // testSmallMillerRabin();
     // findPrimeIdcard();
-    iterate_idcard();
+    // iterate_idcard();
+    findPrimeIdcard();
 }
