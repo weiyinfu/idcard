@@ -2,18 +2,18 @@ use crate::progress::Progress;
 
 pub fn qpow(x: i64, mut y: i64, p: i64) -> i64 {
     //快速幂及模数，x^y%p
-    let mut ans = 1;
-    let mut m = x;
+    let mut ans = 1i128;
+    let mut m: i128 = x as i128;
     while y != 0 {
         if (y & 1) != 0 {
             ans *= m;
-            ans %= p;
+            ans %= p as i128;
         }
         m *= m;
-        m %= p;
+        m %= p as i128;
         y >>= 1;
     }
-    return ans;
+    return ans as i64;
 }
 
 pub fn check(x: i64, y: i64, p: i64) -> bool {

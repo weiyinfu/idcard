@@ -1,12 +1,16 @@
 #![allow(unused_imports)]
 
-use crate::{validate, generate};
-use crate::generate::{YEAR, go};
-use crate::validate::getCheckCode;
-use crate::code2address::getBook;
-use crate::prime::{smallNumberMillerRabin, linearPrime};
 use std::io::{stdout, Write};
+use std::ops::Add;
+
+use chrono::{Date, Duration, TimeZone, Utc};
+
+use crate::{generate, validate};
+use crate::code2address::getBook;
+use crate::generate::go;
+use crate::prime::{linearPrime, smallNumberMillerRabin};
 use crate::progress::Progress;
+use crate::validate::getCheckCode;
 
 #[test]
 fn testBook() {
@@ -26,11 +30,6 @@ fn testValidate() {
 }
 
 #[test]
-fn total() {
-    println!("{}年到{}年之间一共有{}个身份证号", YEAR.0, YEAR.1, generate::total());
-}
-
-#[test]
 fn checkCode() {
     let idcard = "13223519640606352";
     let checkCode = getCheckCode(&idcard.to_string());
@@ -40,9 +39,11 @@ fn checkCode() {
 #[test]
 fn generateAll() {
     //生成所有的身份证号
-    go(|idcard| {
-        println!("{}", idcard);
-    });
+    generate::go(Date::from(Utc.ymd(1999, 10, 01)),
+                 Date::from(Utc.ymd(2020, 10, 1)),
+                 |idcard| {
+                     println!("{}", idcard);
+                 });
 }
 
 #[test]
@@ -71,4 +72,31 @@ fn testPrime() {
         }
     }
     println!("over");
+}
+
+
+#[test]
+fn testIsPrime() {
+    let num = "110102200001011159".parse().unwrap();
+    let res = smallNumberMillerRabin(num);
+    println!("{}", res);
+}
+
+#[test]
+fn maxIdcard() {
+    //最大的身份证号也没有超过i64
+    let num: i128 = "999999999999999999".parse().unwrap();
+    println!("{}", num);
+    println!("{}", (1i128 << 63));
+}
+
+#[test]
+fn iterateDay() {
+    //迭代日期
+    let now = chrono::Date::from(Utc.ymd(1993, 10, 01));
+    for i in 1..10 {
+        let t = now.add(Duration::days(i));
+        println!("{}", t.format("%Y-%m-%d"));
+    }
+    println!("{}",now.format("%Y-%m-%d"));
 }

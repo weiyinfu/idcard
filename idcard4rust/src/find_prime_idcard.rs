@@ -1,5 +1,6 @@
 use crate::generate;
 use crate::prime;
+use chrono::{Date, Utc, TimeZone};
 
 pub(crate) fn go() {
     fn iterate(idcard: &String) {
@@ -15,5 +16,7 @@ pub(crate) fn go() {
             println!("found prime idcard {}", idcard);
         }
     }
-    generate::go(iterate)
+    let begDate = Date::from(Utc.ymd(2020, 5, 1));
+    let endDate = Date::from(Utc.ymd(2020, 6, 1));
+    generate::go(begDate, endDate, iterate);
 }

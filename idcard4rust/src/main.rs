@@ -5,6 +5,7 @@ extern crate chrono;
 use crate::generate::go;
 use crate::prime::{linearPrime, bruteforce, smallNumberMillerRabin};
 use crate::progress::Progress;
+use chrono::{Date, Utc, TimeZone};
 
 mod progress;
 mod validate;
@@ -27,7 +28,9 @@ Release 是110万个iter每秒需要16h才能迭代完
     }
     #[allow(unused_variables)]
     fn nothing(idcard: &String) {}
-    go(nothing);
+    let beg = Date::from(Utc.ymd(1993, 01, 01));
+    let end = Date::from(Utc.ymd(2020, 01, 01));
+    go(beg, end, nothing);
 }
 
 fn testPrimeSpeed() {
@@ -71,5 +74,6 @@ fn findPrimeIdcard() {
 fn main() {
     // testPrimeSpeed();
     // testSmallMillerRabin();
-    findPrimeIdcard();
+    // findPrimeIdcard();
+    iterate_idcard();
 }
